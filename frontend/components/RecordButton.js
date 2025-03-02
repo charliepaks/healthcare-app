@@ -126,7 +126,7 @@ export default function RecordButton({ sourceLang, targetLang, onResult }) {
   const [loading, setLoading] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const API_URL = "http://127.0.0.1:8000";
+  const API_URL = "https://jellyfish-app-irurv.ondigitalocean.app";
 
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -149,7 +149,7 @@ export default function RecordButton({ sourceLang, targetLang, onResult }) {
       
       try {
         // 1) Transcription
-        const speechRes = await fetch(`http://127.0.0.1:8000/api/speech/transcribe?lang=${sourceLang}`, {
+        const speechRes = await fetch(`https://jellyfish-app-irurv.ondigitalocean.app/api/speech/transcribe?lang=${sourceLang}`, {
           method: "POST",
           body: formData,
         });
@@ -162,7 +162,7 @@ export default function RecordButton({ sourceLang, targetLang, onResult }) {
         const originalText = speechData.transcript;
 
         // 2) Translation
-        const translateRes = await fetch(`http://127.0.0.1:8000/api/translate`, {
+        const translateRes = await fetch(`https://jellyfish-app-irurv.ondigitalocean.app/api/translate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: originalText, source_lang: sourceLang, target_lang: targetLang }),
@@ -171,7 +171,7 @@ export default function RecordButton({ sourceLang, targetLang, onResult }) {
         const translatedText = translateData.translated_text;
 
         // 3) TTS
-        const ttsRes = await fetch(`http://127.0.0.1:8000/api/tts`, {
+        const ttsRes = await fetch(`https://jellyfish-app-irurv.ondigitalocean.app/api/tts`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: translatedText, lang: targetLang }),
